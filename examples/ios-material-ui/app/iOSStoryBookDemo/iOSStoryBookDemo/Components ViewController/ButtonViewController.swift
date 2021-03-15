@@ -10,7 +10,15 @@ import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
 import UIKit
 
-class ButtonViewController: UIViewController {
+class ButtonViewController: UIViewController, DictionaryProtocol {
+    func loadValues(_ dict: [String : Any]) {
+        var title = "Default button title"
+        if self.value(forKey: "label") != nil {
+            title = self.value(forKey: "label") as! String
+        }
+        textButton.setTitle(title, for: UIControl.State.application)
+    }
+    
     let floatingButtonPlusDimension = CGFloat(24)
     let kMinimumAccessibleButtonSize = CGSize(width: 64, height: 48)
     let backgroundColor = UIColor(white: 0.1, alpha: 1.0)
@@ -30,8 +38,8 @@ class ButtonViewController: UIViewController {
         textButton.applyTextTheme(withScheme: containerScheme)
         outLinedButton.applyOutlinedTheme(withScheme: containerScheme)
         containedButton.applyContainedTheme(withScheme: containerScheme)
-        // Do any additional setup after loading the view.
     }
+    
     func buttonResize() {
         let buttonVerticalInset =
             min(0, -(kMinimumAccessibleButtonSize.height - textButton.bounds.height) / 2);

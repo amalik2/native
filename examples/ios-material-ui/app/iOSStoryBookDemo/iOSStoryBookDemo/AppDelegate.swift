@@ -64,11 +64,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let launchOption: String = UserDefaults.standard.string(forKey: AppDelegate.launch_option) ?? ""
+
         if launchOption.lowercased() == DemoPageType.main.rawValue {
             UserDefaults.standard.set(true, forKey: isDeveloper)
-            launchDemoPage( DemoAppType.developer, DemoPageType.main )
+            launchDemoPage( DemoAppType.developer, DemoPageType.main, UserDefaults.standard.dictionaryRepresentation())
         } else if  AppDelegate.fromAppetize() {
-            launchGalleryFromAppetize(launchOption)
+            launchGalleryFromAppetize(launchOption, UserDefaults.standard.dictionaryRepresentation())
         } else {
             UserDefaults.standard.set(true, forKey: isDeveloper)
         }
@@ -91,20 +92,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 parameters[$0.name] = $0.value
             }
             
-            launchGalleryFromAppetize(parameters["component"]!)
+            launchGalleryFromAppetize(parameters["component"]!, parameters)
         }
         return true
     }
     
-    func launchGalleryFromAppetize(_ launchOption: String) {
+    func launchGalleryFromAppetize(_ launchOption: String, _ extraData: [String:Any]) {
         var launchOption = launchOption
         if launchOption.isEmpty {
             launchOption = DemoPageType.main.rawValue
         }
         if let pageType = DemoPageType(rawValue: launchOption.lowercased()) {
-            launchDemoPage( DemoAppType.gallery, pageType )
+            launchDemoPage( DemoAppType.gallery, pageType, extraData)
         } else {
-            launchDemoPage( DemoAppType.gallery, DemoPageType.main )
+            launchDemoPage( DemoAppType.gallery, DemoPageType.main, extraData)
         }
     }
     
@@ -112,14 +113,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         switch demoAppType {
         case .gallery:
             AppDelegate.setGalleryDemoAppUserDefaults()
-            launchDemoPage(DemoAppType.gallery, DemoPageType.main)
+            launchDemoPage(DemoAppType.gallery, DemoPageType.main, nil)
         default:
             AppDelegate.resetGalleryDemoApppUserDefaults()
-            launchDemoPage( DemoAppType.developer, DemoPageType.main )
+            launchDemoPage( DemoAppType.developer, DemoPageType.main, nil)
         }
     }
     
-    func launchDemoPage(_ demoAppType: DemoAppType, _ demoPage: DemoPageType) {
+    func launchDemoPage(_ demoAppType: DemoAppType, _ demoPage: DemoPageType, _ extraData: [String:Any]?) {
         let nvc = navigationController(demoAppType)
         let menuVC = viewController(DemoPageType.main)
         let VCToLaunch = viewController(demoPage)
@@ -130,8 +131,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 nvc.pushViewController(menuVC, animated: false)
             }
         }
+        
         nvc.pushViewController(VCToLaunch, animated: false)
         window?.rootViewController = nvc
+        
+        if extraData != nil {
+            if let dp = VCToLaunch as? DictionaryProtocol {
+                dp.loadValues(extraData!)
+            }
+        }
     }
     
     func storyboardName(_ demoAppType: DemoAppType) -> String {

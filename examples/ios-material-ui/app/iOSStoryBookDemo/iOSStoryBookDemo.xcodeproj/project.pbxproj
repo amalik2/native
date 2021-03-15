@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		17DCD67125FFD364007BC052 /* DictionaryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DCD67025FFD364007BC052 /* DictionaryProtocol.swift */; };
 		18EF26042501B62800B5A32B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EF26032501B62800B5A32B /* AppDelegate.swift */; };
 		18EF260D2501B62900B5A32B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18EF260C2501B62900B5A32B /* Assets.xcassets */; };
 		18EF26102501B62900B5A32B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18EF260E2501B62900B5A32B /* LaunchScreen.storyboard */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		17DCD67025FFD364007BC052 /* DictionaryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryProtocol.swift; sourceTree = "<group>"; };
 		18EF26002501B62800B5A32B /* iOSStoryBookDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSStoryBookDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18EF26032501B62800B5A32B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18EF260C2501B62900B5A32B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				6FFBDE7A252B640900F9DE23 /* TextFieldViewController.swift */,
 				6FFBDE85252BD7A600F9DE23 /* SpinnerViewController.swift */,
 				6FFBDE87252BE11900F9DE23 /* SliderViewController.swift */,
+				17DCD67025FFD364007BC052 /* DictionaryProtocol.swift */,
 			);
 			path = "Components ViewController";
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				6FFBDE88252BE11900F9DE23 /* SliderViewController.swift in Sources */,
 				6FFBDE7E252B640A00F9DE23 /* ButtonViewController.swift in Sources */,
 				6FFBDE75252B53EE00F9DE23 /* MenuViewController.swift in Sources */,
+				17DCD67125FFD364007BC052 /* DictionaryProtocol.swift in Sources */,
 				6FFBDE72252B53EE00F9DE23 /* TableViewCell.swift in Sources */,
 				6FFBDE6A252B53EE00F9DE23 /* UIColor+Extensions.swift in Sources */,
 				6FFBDE80252B67D400F9DE23 /* TableViewCellBaseViewController.swift in Sources */,
