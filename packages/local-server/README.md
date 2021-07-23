@@ -1,6 +1,6 @@
 # @storybook/native-local-server
 
-This package installs an APK or IPA file onto the Android or iOS emulator on your local machine, and starts a server that lets you control the emulator by interacting with a static storybook hosted on a website.
+This package installs an APK or APP file onto the Android or iOS emulator on your local machine, and starts a server that lets you control the emulator by interacting with a static storybook hosted on a website.
 
 ## Installation
 `npm install @storybook/native-local-server`
