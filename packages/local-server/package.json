@@ -1,0 +1,36 @@
+{
+  "name": "@storybook/native-local-server",
+  "version": "2.1.1",
+  "main": "./dist/index.js",
+  "description": "Server that allows controlling a local emulator from a static storybook hosted on a web page",
+  "files": [
+    "dist",
+    "runAndroid.js",
+    "runIos.js"
+  ],
+  "repository": "https://github.com/storybookjs/native.git",
+  "author": "Adil Malik <adil_malik@intuit.com>",
+  "license": "MIT",
+  "contributors": [
+    "Adil Malik <adil_malik@intuit.com>"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@storybook/native-dev-middleware": "link:../dev-middleware",
+    "@storybook/native-types": "link:../types",
+    "@types/express": "^4.17.11",
+    "axios": "^0.21.1",
+    "express": "^4.17.0",
+    "ios-sim": "^9.0.0"
+  },
+  "gitHead": "fbc105e027161ddd733378b77cb64c28d776a371",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "native-android-app": "node ./runAndroid.js",
+    "native-ios-app": "node ./runIos.js"
+  }
+}
