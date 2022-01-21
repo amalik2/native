@@ -3,15 +3,30 @@ import type { HandledMessageResponse } from "../types";
 import { ActionTypes } from "../constants";
 import type { AppDispatch, ThunkActionHandler } from "./store";
 
+const getServerBaseUrl = () => {
+    return `http://localhost:3000`;
+
+    console.error(window.location.origin);
+    console.error(window.location.origin.includes("localhost"));
+    if (window.location.origin.includes("localhost")) {
+        return window.location.origin;
+    }
+
+    // TODO: make this configurable
+    return `http://localhost:3000`;
+};
+
 export const performCommand = (
-    url: string,
+    urlPath: string,
     data: Record<string, any>
 ): ThunkActionHandler => {
     return async (dispatch) => {
         dispatch({ type: ActionTypes.PERFORM_COMMAND });
 
         try {
-            const response = await axios.post(url, data);
+            const baseUrl = getServerBaseUrl();
+
+            const response = await axios.post(baseUrl + urlPath, data);
             const details: HandledMessageResponse = {
                 message: data,
                 response: response.data.message,

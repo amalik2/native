@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import {
     middleware,
     NativeDevMiddlewareConfig
@@ -9,6 +10,8 @@ export const runApp = (
     port = 3000
 ) => {
     const app = express();
+    app.use(cors());
+    app.options("*", cors);
     middleware(middlewareConfig)(app);
 
     app.listen(port, () => {
