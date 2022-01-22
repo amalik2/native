@@ -17,7 +17,9 @@
   ],
   "scripts": {
     "build": "tsc -b",
-    "start": "node ./runServer.js"
+    "start": "node ./runServer.js",
+    "android": "node ./runAndroid.js",
+    "ios": "node ./runIos.js"
   },
   "dependencies": {
     "@storybook/native-dev-middleware": "link:../dev-middleware",

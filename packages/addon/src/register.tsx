@@ -5,7 +5,7 @@ import { ACTION_EVENT_NAME } from "@storybook/native-controllers";
 import { DeepLinksContainer } from "@storybook/deep-link-logger";
 import { EmulatorActions } from "@storybook/native-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUndo, faRedo } from "@fortawesome/free-solid-svg-icons";
+import { faUndo, faRedo, faLaptop } from "@fortawesome/free-solid-svg-icons";
 
 import { ADDON_ID, DEEP_LINKS_PARAM_KEY } from "./constants";
 import DeviceSelector from "./components/DeviceSelector";
@@ -24,6 +24,10 @@ addons.register(ADDON_ID, (api) => {
             ACTION_EVENT_NAME,
             EmulatorActions.saveScreenshot
         );
+    };
+
+    const runLocally = () => {
+        window.location.href = `${window.location.href}&controller=local`;
     };
 
     addons.add(`${ADDON_ID}/rotateLeft`, {
@@ -69,5 +73,15 @@ addons.register(ADDON_ID, (api) => {
             <DeepLinksContainer key={key} api={api} active={active} />
         ),
         paramKey: DEEP_LINKS_PARAM_KEY
+    });
+
+    addons.add(`${ADDON_ID}/runLocally`, {
+        type: types.TOOL,
+        title: "Run locally",
+        render: () => (
+            <IconButton title="Run locally" onClick={runLocally}>
+                <FontAwesomeIcon size="sm" icon={faLaptop} />
+            </IconButton>
+        )
     });
 });

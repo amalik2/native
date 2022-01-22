@@ -1,8 +1,10 @@
 /* eslint-disable max-len */
 // https://github.com/wswebcreation/start-android-emulator
 import { exec, execSync } from "child_process";
-import path from "path";
-import { downloadFile } from "./downloadFile";
+
+const log = (message: string) => {
+    console.log(`[android emulator] ${message}`);
+};
 
 const waitUntilBooted = (adbPath: string): Promise<void> => {
     return new Promise((resolve) => {
@@ -11,6 +13,7 @@ const waitUntilBooted = (adbPath: string): Promise<void> => {
                 if (stdout.replace("\n", "") === "stopped") {
                     clearInterval(checkId);
                     resolve();
+                    log(`finished booting`);
                 }
             });
         }, 500);
@@ -39,16 +42,17 @@ const installFile = (adbPath: string, filePath: string) => {
         execSync(`${adbPath} install -t -r ${filePath}`);
     } catch (ex) {
         console.error(ex);
+        // @ts-ignore
         const stderr = ex.stderr.toString();
         const forceReinstallRegex = /Package (.*) signatures do not/g;
         const match = forceReinstallRegex.exec(stderr);
         if (match && match[1]) {
-            console.log(`Uninstalling ${match[1]} from device`);
+            log(`Uninstalling ${match[1]} from device`);
             execSync(`${adbPath} uninstall ${match[1]}`, {
                 stdio: "inherit"
             });
 
-            console.log(`Attempting to reinstall ${filePath} on device`);
+            log(`Attempting to reinstall ${filePath} on device`);
             execSync(`${adbPath} install -r ${filePath}`, {
                 stdio: "inherit"
             });
@@ -56,9 +60,13 @@ const installFile = (adbPath: string, filePath: string) => {
     }
 };
 
-export const runAndroidEmulator = async (adbPath: string, apkUrl: string) => {
-    const device = getDevice();
-    console.log(`[android emulator] Booting with ${device}`);
+export const runAndroidEmulator = async (
+    adbPath: string,
+    apkFilePath?: string,
+    deviceOverride?: string
+) => {
+    const device = deviceOverride || getDevice();
+    log(`Booting with ${device}`);
     const emulatorProcess = exec(
         `emulator -avd ${device} -netdelay none -netspeed full &`,
         (err) => {
@@ -66,34 +74,15 @@ export const runAndroidEmulator = async (adbPath: string, apkUrl: string) => {
                 throw err;
             }
 
-            console.log("ran start emulator command successfully");
+            log("ran start emulator command successfully");
         }
     );
     emulatorProcess.stdout?.pipe(process.stdout);
 
-    // TODO: URLs that require authentication
-    const isWebUrl = apkUrl.startsWith("http");
-    const apkFilePath = isWebUrl
-        ? path.join(process.cwd(), "tempAppFile.apk")
-        : apkUrl;
-    if (isWebUrl) {
-        await downloadFile(apkUrl, apkFilePath);
-    }
-
     await waitUntilBooted(adbPath);
     await wait(2000);
 
-    installFile(adbPath, apkFilePath);
-    /* execSync(
-        `cd ../../examples/controls && export STORYBOOK_NATIVE_LOCAL_EMULATOR="true" && yarn start`,
-        {
-            stdio: "inherit"
-        }
-    ); */
-    /* execSync(
-        `export STORYBOOK_NATIVE_LOCAL_EMULATOR="true" && yarn start`,
-        {
-            stdio: "inherit"
-        }
-    ); */
+    if (apkFilePath) {
+        installFile(adbPath, apkFilePath);
+    }
 };

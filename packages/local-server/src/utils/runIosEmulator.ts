@@ -1,16 +1,8 @@
 /* eslint-disable max-len */
 import { execSync } from "child_process";
-import path from "path";
-import { downloadFile } from "./downloadFile";
 
 const installFile = (device: string, filePath: string) => {
     execSync(`yarn ios-sim install ${filePath} -d ${device}`, {
-        stdio: "inherit"
-    });
-};
-
-const exit = () => {
-    execSync(`xcrun simctl shutdown all`, {
         stdio: "inherit"
     });
 };
@@ -28,18 +20,9 @@ const boot = (device: string) => {
     }); */
 };
 
-export const runIosEmulator = async (appUrl: string) => {
-    const device = "iPhone-12";
+export const runIosEmulator = async (appUrl?: string, device = "iPhone-12") => {
     boot(device);
-
-    // TODO: URLs that require authentication
-    const isWebUrl = appUrl.startsWith("http");
-    const appFilePath = isWebUrl
-        ? path.join(process.cwd(), "tempAppFile.app")
-        : appUrl;
-    if (isWebUrl) {
-        await downloadFile(appUrl, appFilePath);
+    if (appUrl) {
+        installFile(device, appUrl);
     }
-
-    installFile(device, appFilePath);
 };
