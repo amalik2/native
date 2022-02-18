@@ -2,7 +2,7 @@
 // https://github.com/wswebcreation/start-android-emulator
 import { exec, execSync } from "child_process";
 
-const log = (message: string) => {
+const log = (message: string | Error) => {
     console.log(`[android emulator] ${message}`);
 };
 
@@ -41,7 +41,8 @@ const installFile = (adbPath: string, filePath: string) => {
     try {
         execSync(`${adbPath} install -t -r ${filePath}`);
     } catch (ex) {
-        console.error(ex);
+        // @ts-ignore
+        log(ex);
         // @ts-ignore
         const stderr = ex.stderr.toString();
         const forceReinstallRegex = /Package (.*) signatures do not/g;
@@ -69,12 +70,17 @@ export const runAndroidEmulator = async (
     log(`Booting with ${device}`);
     const emulatorProcess = exec(
         `emulator -avd ${device} -netdelay none -netspeed full &`,
-        (err) => {
+        (err, stdout, stderr) => {
             if (err) {
                 throw err;
             }
 
-            log("ran start emulator command successfully");
+            if (stderr) {
+                throw new Error(stderr);
+            } else {
+                log(stdout);
+                log("ran start emulator command successfully");
+            }
         }
     );
     emulatorProcess.stdout?.pipe(process.stdout);

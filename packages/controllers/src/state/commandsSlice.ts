@@ -4,10 +4,12 @@ import { ActionTypes } from "../constants";
 import type { AppDispatch, ThunkActionHandler } from "./store";
 
 const getServerUrl = () => {
+    // Dev environment, so the dev middleware is run by the Storybook server
     if (window.location.hostname.includes("localhost")) {
         return window.location.origin;
     }
 
+    // Prod environment, so the dev middleware is run by the user on port 3000
     return `http://localhost:3000`;
 };
 

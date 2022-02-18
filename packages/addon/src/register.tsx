@@ -27,7 +27,13 @@ addons.register(ADDON_ID, (api) => {
     };
 
     const runLocally = () => {
-        window.location.href = `${window.location.href}&controller=local`;
+        const params = new URLSearchParams(window.location.search);
+        params.set("controller", "local");
+        window.history.pushState(
+            "null",
+            "",
+            decodeURIComponent(`?${params.toString()}`)
+        );
     };
 
     addons.add(`${ADDON_ID}/rotateLeft`, {
@@ -75,6 +81,7 @@ addons.register(ADDON_ID, (api) => {
         paramKey: DEEP_LINKS_PARAM_KEY
     });
 
+    // TODO: add this
     addons.add(`${ADDON_ID}/runLocally`, {
         type: types.TOOL,
         title: "Run locally",
